@@ -17,26 +17,32 @@ public class TagServiceImpl implements TagService {
 	private TagRepository tagRepository;
 
 	@Override
-	public Tag create(Tag tag) {
+	public Tag save(Tag tag) {
+		if (tag.getTagId() != null && tagRepository.existsById(tag.getTagId())) {
+			throw new IllegalArgumentException("Tag já existe.");
+		}
+		if (tagRepository.existsByName(tag.getName())) {
+			throw new IllegalArgumentException("Tag já cadastrada.");
+		}
 		return tagRepository.save(tag);
 	}
 
 	@Override
-	public List<Tag> findAll() {
+	public List<Tag> getAll() {
 		return tagRepository.findAll();
 	}
 
 	@Override
-	public Optional<Tag> findById(Long id) {
+	public Optional<Tag> getById(Long id) {
 		return tagRepository.findById(id);
 	}
 
 	@Override
-	public Optional<Tag> update(Long id, Tag tag) {
-		return tagRepository.findById(id).map(existing -> {
-			tag.setTagId(id);
-			return tagRepository.save(tag);
-		});
+	public Tag update(Tag tag) {
+		if (tag.getTagId() == null || !tagRepository.existsById(tag.getTagId())) {
+			throw new IllegalArgumentException("Tag não encontrada.");
+		}
+		return tagRepository.save(tag);
 	}
 
 	@Override

@@ -17,26 +17,29 @@ public class PostServiceImpl implements PostService {
 	private PostRepository postRepository;
 
 	@Override
-	public Post create(Post post) {
+	public Post save(Post post) {
+		if (post.getPostId() != null && postRepository.existsById(post.getPostId())) {
+			throw new IllegalArgumentException("Post já existe.");
+		}
 		return postRepository.save(post);
 	}
 
 	@Override
-	public List<Post> findAll() {
+	public List<Post> getAll() {
 		return postRepository.findAll();
 	}
 
 	@Override
-	public Optional<Post> findById(Long id) {
+	public Optional<Post> getById(Long id) {
 		return postRepository.findById(id);
 	}
 
 	@Override
-	public Optional<Post> update(Long id, Post post) {
-		return postRepository.findById(id).map(existing -> {
-			post.setPostId(id);
-			return postRepository.save(post);
-		});
+	public Post update(Post post) {
+		if (post.getPostId() == null || !postRepository.existsById(post.getPostId())) {
+			throw new IllegalArgumentException("Post não encontrado.");
+		}
+		return postRepository.save(post);
 	}
 
 	@Override

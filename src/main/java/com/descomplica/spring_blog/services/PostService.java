@@ -7,13 +7,13 @@ import com.descomplica.spring_blog.models.Post;
 
 public interface PostService {
 
-	Post create(Post post);
+	Post save(Post post);
 
-	List<Post> findAll();
+	List<Post> getAll();
 
-	Optional<Post> findById(Long id);
+	Optional<Post> getById(Long id);
 
-	Optional<Post> update(Long id, Post post);
+	Post update(Post post);
 
 	boolean delete(Long id);
 }

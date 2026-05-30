@@ -17,26 +17,29 @@ public class CommentServiceImpl implements CommentService {
 	private CommentRepository commentRepository;
 
 	@Override
-	public Comment create(Comment comment) {
+	public Comment save(Comment comment) {
+		if (comment.getCommentId() != null && commentRepository.existsById(comment.getCommentId())) {
+			throw new IllegalArgumentException("Comentário já existe.");
+		}
 		return commentRepository.save(comment);
 	}
 
 	@Override
-	public List<Comment> findAll() {
+	public List<Comment> getAll() {
 		return commentRepository.findAll();
 	}
 
 	@Override
-	public Optional<Comment> findById(Long id) {
+	public Optional<Comment> getById(Long id) {
 		return commentRepository.findById(id);
 	}
 
 	@Override
-	public Optional<Comment> update(Long id, Comment comment) {
-		return commentRepository.findById(id).map(existing -> {
-			comment.setCommentId(id);
-			return commentRepository.save(comment);
-		});
+	public Comment update(Comment comment) {
+		if (comment.getCommentId() == null || !commentRepository.existsById(comment.getCommentId())) {
+			throw new IllegalArgumentException("Comentário não encontrado.");
+		}
+		return commentRepository.save(comment);
 	}
 
 	@Override

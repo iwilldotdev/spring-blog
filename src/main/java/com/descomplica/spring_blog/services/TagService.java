@@ -7,13 +7,13 @@ import com.descomplica.spring_blog.models.Tag;
 
 public interface TagService {
 
-	Tag create(Tag tag);
+	Tag save(Tag tag);
 
-	List<Tag> findAll();
+	List<Tag> getAll();
 
-	Optional<Tag> findById(Long id);
+	Optional<Tag> getById(Long id);
 
-	Optional<Tag> update(Long id, Tag tag);
+	Tag update(Tag tag);
 
 	boolean delete(Long id);
 }

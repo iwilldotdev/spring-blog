@@ -7,13 +7,13 @@ import com.descomplica.spring_blog.models.User;
 
 public interface UserService {
 
-	User create(User user);
+	User save(User user);
 
-	List<User> findAll();
+	List<User> getAll();
 
-	Optional<User> findById(Long id);
+	Optional<User> getById(Long id);
 
-	Optional<User> update(Long id, User user);
+	User update(User user);
 
 	boolean delete(Long id);
 }

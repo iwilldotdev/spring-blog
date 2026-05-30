@@ -7,13 +7,13 @@ import com.descomplica.spring_blog.models.Comment;
 
 public interface CommentService {
 
-	Comment create(Comment comment);
+	Comment save(Comment comment);
 
-	List<Comment> findAll();
+	List<Comment> getAll();
 
-	Optional<Comment> findById(Long id);
+	Optional<Comment> getById(Long id);
 
-	Optional<Comment> update(Long id, Comment comment);
+	Comment update(Comment comment);
 
 	boolean delete(Long id);
 }

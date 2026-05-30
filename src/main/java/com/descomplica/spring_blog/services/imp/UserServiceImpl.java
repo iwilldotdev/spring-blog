@@ -17,26 +17,35 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Override
-	public User create(User user) {
+	public User save(User user) {
+		if (user.getUserId() != null && userRepository.existsById(user.getUserId())) {
+			throw new IllegalArgumentException("Usuário já existe.");
+		}
+		if (userRepository.existsByEmail(user.getEmail())) {
+			throw new IllegalArgumentException("E-mail já cadastrado.");
+		}
+		if (userRepository.existsByUsername(user.getUsername())) {
+			throw new IllegalArgumentException("Nome de usuário já cadastrado.");
+		}
 		return userRepository.save(user);
 	}
 
 	@Override
-	public List<User> findAll() {
+	public List<User> getAll() {
 		return userRepository.findAll();
 	}
 
 	@Override
-	public Optional<User> findById(Long id) {
+	public Optional<User> getById(Long id) {
 		return userRepository.findById(id);
 	}
 
 	@Override
-	public Optional<User> update(Long id, User user) {
-		return userRepository.findById(id).map(existing -> {
-			user.setUserId(id);
-			return userRepository.save(user);
-		});
+	public User update(User user) {
+		if (user.getUserId() == null || !userRepository.existsById(user.getUserId())) {
+			throw new IllegalArgumentException("Usuário não encontrado.");
+		}
+		return userRepository.save(user);
 	}
 
 	@Override
