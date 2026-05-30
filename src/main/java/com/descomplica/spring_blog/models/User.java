@@ -50,6 +50,18 @@ public class User {
 	public User() {
 	}
 
+	public User(final Long userId, final String name, final String email, final String password, final Role role,
+			final String username, final List<Post> posts, final List<Comment> comments) {
+		this.userId = userId;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.username = username;
+		this.posts = posts;
+		this.comments = comments;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}

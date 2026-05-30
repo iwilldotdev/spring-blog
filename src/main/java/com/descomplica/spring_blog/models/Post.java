@@ -55,6 +55,17 @@ public class Post {
 	public Post() {
 	}
 
+	public Post(final Long postId, final String title, final String content, final LocalDateTime date,
+			final User user, final List<Comment> comments, final Set<Tag> tags) {
+		this.postId = postId;
+		this.title = title;
+		this.content = content;
+		this.date = date;
+		this.user = user;
+		this.comments = comments;
+		this.tags = tags;
+	}
+
 	public Long getPostId() {
 		return postId;
 	}

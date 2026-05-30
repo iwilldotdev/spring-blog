@@ -29,6 +29,12 @@ public class Tag {
 	public Tag() {
 	}
 
+	public Tag(final Long tagId, final String name, final Set<Post> posts) {
+		this.tagId = tagId;
+		this.name = name;
+		this.posts = posts;
+	}
+
 	public Long getTagId() {
 		return tagId;
 	}
