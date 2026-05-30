@@ -1,6 +1,6 @@
 # Spring Blog
 
-API REST em desenvolvimento para um mini blog, construída com Spring Boot.
+API REST para um mini blog, construída com Spring Boot.
 
 ## Stack
 
@@ -41,17 +41,56 @@ Relacionamentos principais:
 
 - `Role`: `ADMIN` e `USER`
 
-### Estrutura de pacotes
+### Repositories JPA
 
-Pacotes `controllers` e `services` já criados como base para as próximas camadas da API.
+Repositórios Spring Data JPA para persistência das entidades:
+
+- `UserRepository` — inclui verificação de e-mail e username duplicados
+- `TagRepository` — inclui verificação de nome duplicado
+- `PostRepository`
+- `CommentRepository`
+
+### Services
+
+Camada de serviços com interfaces e implementações:
+
+| Interface | Implementação |
+|-----------|---------------|
+| `UserService` | `UserServiceImpl` |
+| `TagService` | `TagServiceImpl` |
+| `PostService` | `PostServiceImpl` |
+| `CommentService` | `CommentServiceImpl` |
+
+As implementações ficam no pacote `services.imp`, utilizam `@Service` e injetam os repositórios com `@Autowired`. Cada serviço valida existência de registros antes de salvar, atualizar ou excluir.
+
+### Controllers REST (CRUD)
+
+Operações CRUD implementadas para todas as entidades, com endpoints padronizados:
+
+| Operação | Método HTTP | Caminho |
+|----------|-------------|---------|
+| Create | `POST` | `/{recurso}/save` |
+| Read (lista) | `GET` | `/{recurso}/getAll` |
+| Read (por id) | `GET` | `/{recurso}/getById/{id}` |
+| Update | `POST` | `/{recurso}/update` |
+| Delete | `DELETE` | `/{recurso}/delete/{id}` |
+
+Recursos disponíveis: `/users`, `/tags`, `/posts`, `/comments`.
+
+Exemplos:
+
+- `POST /users/save` — cria usuário (retorna `409` se já existir)
+- `GET /posts/getAll` — lista todos os posts
+- `GET /comments/getById/1` — busca comentário por id
+- `POST /tags/update` — atualiza tag (id no body)
+- `DELETE /users/delete/1` — remove usuário por id
 
 ## O que ainda não foi implementado
 
-- Controllers REST
-- Services e regras de negócio
-- Repositories JPA
-- Configuração de segurança (autenticação/autorização)
-- Endpoints públicos da API
+- Configuração de segurança (autenticação/autorização e endpoints públicos)
+- DTOs e mapeamento de respostas
+- Tratamento global de exceções
+- Testes de integração dos endpoints
 
 ## Como executar
 
@@ -60,6 +99,8 @@ Pacotes `controllers` e `services` já criados como base para as próximas camad
 ```
 
 A aplicação sobe em `http://localhost:8080`.
+
+> **Nota:** o Spring Security está ativo por padrão e exige autenticação para acessar os endpoints. A senha gerada aparece no log ao iniciar a aplicação.
 
 ### Console H2
 
@@ -74,6 +115,10 @@ A aplicação sobe em `http://localhost:8080`.
 src/main/java/com/descomplica/spring_blog/
 ├── SpringBlogApplication.java
 ├── controllers/
+│   ├── CommentController.java
+│   ├── PostController.java
+│   ├── TagController.java
+│   └── UserController.java
 ├── enums/
 │   └── Role.java
 ├── models/
@@ -81,5 +126,19 @@ src/main/java/com/descomplica/spring_blog/
 │   ├── Post.java
 │   ├── Tag.java
 │   └── User.java
+├── repositories/
+│   ├── CommentRepository.java
+│   ├── PostRepository.java
+│   ├── TagRepository.java
+│   └── UserRepository.java
 └── services/
+    ├── CommentService.java
+    ├── PostService.java
+    ├── TagService.java
+    ├── UserService.java
+    └── imp/
+        ├── CommentServiceImpl.java
+        ├── PostServiceImpl.java
+        ├── TagServiceImpl.java
+        └── UserServiceImpl.java
 ```
